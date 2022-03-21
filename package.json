@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "airdrop-user-wallet": "node -e 'require(\"./helpers/accounts\").airDropSol()'",
+    "get-user-balance": "node -e 'require(\"./helpers/accounts\").getWalletBalance(require(\"./helpers/accounts\").userPublicKey)'"
   },
   "author": "",
   "license": "ISC",

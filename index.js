@@ -22,19 +22,20 @@ console.log(`
 `);
 
 const randomNumber = getRandom(1, 5);
-console.log(randomNumber);
+// console.log(randomNumber); // CHEATING (:
 let solToStake, ratio, numberPick;
 
-readline.question("How much SOL do you want to stake? ", (s) => {
+readline.question("\nHow much SOL do you want to stake? ", (s) => {
   solToStake = parseInt(s);
+
   readline.question(
-    "At what ratio do you want to stake?(1:2, 1:1.5, 1:2.5) 1:",
+    "\nAt what ratio do you want to stake(1:2, 1:1.5, 1:2.5)? 1:",
     (r) => {
       ratio = parseFloat(r);
       console.log(`You will get ${solToStake * ratio} on winning.`);
 
       readline.question(
-        "Finally, pick a random number between 1 & 5: ",
+        "\nFinally, pick a random number between 1 & 5: ",
         async (p) => {
           numberPick = parseInt(p);
 
@@ -59,7 +60,7 @@ readline.question("How much SOL do you want to stake? ", (s) => {
                 solToStake * ratio
               );
               console.log(
-                `Winning amount sent in transaction signature(txid) ${payment}`
+                `Winning amount sent in transaction signature(txid) ${airdrop}`
               );
             }
           } else {

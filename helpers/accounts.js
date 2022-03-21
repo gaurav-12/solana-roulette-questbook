@@ -39,45 +39,58 @@ module.exports.getWalletBalance = async (publicKey) => {
     const walletBalance = await connection.getBalance(
       new PublicKey(publicKey) // or use variable 'publicKey'
     );
+
     console.log(`=> For wallet address ${publicKey}`);
     console.log(
-      `   Wallet balance: ${parseInt(walletBalance) / LAMPORTS_PER_SOL} SOL`
+      `    Wallet balance: ${parseInt(walletBalance) / LAMPORTS_PER_SOL} SOL`
     );
+
     return parseInt(walletBalance) / LAMPORTS_PER_SOL;
   } catch (err) {
     console.log(err);
   }
 };
 
-module.exports.airDropSol = async (publicKey, dropAmount) => {
+module.exports.airDropSol = async (
+  publicKey = this.userPublicKey,
+  dropAmount = 2
+) => {
   try {
     const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
-    console.log(`-- Airdropping 2 SOL --`);
     const fromAirDropSignature = await connection.requestAirdrop(
       new PublicKey(publicKey),
       dropAmount * LAMPORTS_PER_SOL
     );
-    console.log(`Airdropping to ${publicKey}...`);
+
+    console.log(`=> Airdropping ${dropAmount} SOL to ${publicKey}`);
     await connection.confirmTransaction(fromAirDropSignature);
+    console.log("    Airdropped!");
+
     return fromAirDropSignature;
   } catch (err) {
     console.log(err);
   }
 };
 
-module.exports.transferSOL = async (from, to, transferAmt) => {
+module.exports.transferSOL = async (from, to, transferAmount) => {
   try {
     const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
     const transaction = new Transaction().add(
       SystemProgram.transfer({
         fromPubkey: new PublicKey(from.publicKey.toString()),
         toPubkey: new PublicKey(to.publicKey.toString()),
-        lamports: transferAmt * LAMPORTS_PER_SOL,
+        lamports: transferAmount * LAMPORTS_PER_SOL,
       })
+    );
+
+    console.log(
+      `=> Transferring from ${from.publicKey.toString()} to ${to.publicKey.toString()}`
     );
     const signature = await sendAndConfirmTransaction(connection, transaction, [
       from,
     ]);
+    console.log(`    Transferred ${transferAmount} SOL`);
+
     return signature;
   } catch (err) {
     console.log(err);
